@@ -143,7 +143,8 @@ protected:
   struct ServiceClientInstance
   {
     ServiceClientInstance(std::shared_ptr<rclcpp::Node> node,
-                          const std::string& service_name, const rmw_qos_profile_t  qos_profile);
+                          const std::string& service_name,
+                          const rmw_qos_profile_t qos_profile);
 
     ServiceClientPtr service_client;
     rclcpp::CallbackGroup::SharedPtr callback_group;
@@ -211,7 +212,8 @@ private:
 
 template <class T>
 inline RosServiceNode<T>::ServiceClientInstance::ServiceClientInstance(
-    std::shared_ptr<rclcpp::Node> node, const std::string& service_name, const rmw_qos_profile_t  qos_profile)
+    std::shared_ptr<rclcpp::Node> node, const std::string& service_name,
+    const rmw_qos_profile_t qos_profile)
 {
   callback_group =
       node->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive, false);
@@ -275,7 +277,8 @@ inline bool RosServiceNode<T>::createClient(const std::string& service_name)
   auto it = registry.find(client_key);
   if(it == registry.end() || it->second.expired())
   {
-    srv_instance_ = std::make_shared<ServiceClientInstance>(node, service_name, qos_profile_);
+    srv_instance_ =
+        std::make_shared<ServiceClientInstance>(node, service_name, qos_profile_);
     registry.insert({ client_key, srv_instance_ });
 
     RCLCPP_INFO(logger(), "Node [%s] created service client [%s]", name().c_str(),

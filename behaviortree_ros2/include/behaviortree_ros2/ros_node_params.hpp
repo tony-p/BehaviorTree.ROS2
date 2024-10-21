@@ -37,9 +37,11 @@ struct RosNodeParams
   std::string default_port_value;
 
   // Different configuration based on the context:
-  rclcpp::QoS topic_qos = rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(rmw_qos_profile_default));
+  rclcpp::QoS topic_qos =
+      rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(rmw_qos_profile_default));
   rmw_qos_profile_t service_qos_profile = rmw_qos_profile_services_default;
-  rcl_action_client_options_t action_client_options = rcl_action_client_get_default_options();
+  rcl_action_client_options_t action_client_options =
+      rcl_action_client_get_default_options();
 
   // parameters used only by service client and action clients
 

@@ -51,7 +51,8 @@ public:
 protected:
   struct SubscriberInstance
   {
-    SubscriberInstance(std::shared_ptr<rclcpp::Node> node, const std::string& topic_name, const rclcpp::QoS& qos);
+    SubscriberInstance(std::shared_ptr<rclcpp::Node> node, const std::string& topic_name,
+                       const rclcpp::QoS& qos);
 
     std::shared_ptr<Subscriber> subscriber;
     rclcpp::CallbackGroup::SharedPtr callback_group;
@@ -165,7 +166,8 @@ private:
 //----------------------------------------------------------------
 template <class T>
 inline RosTopicSubNode<T>::SubscriberInstance::SubscriberInstance(
-    std::shared_ptr<rclcpp::Node> node, const std::string& topic_name, const rclcpp::QoS& qos)
+    std::shared_ptr<rclcpp::Node> node, const std::string& topic_name,
+    const rclcpp::QoS& qos)
 {
   // create a callback group for this particular instance
   callback_group =
