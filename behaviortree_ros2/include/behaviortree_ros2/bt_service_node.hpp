@@ -144,7 +144,7 @@ protected:
   {
     ServiceClientInstance(std::shared_ptr<rclcpp::Node> node,
                           const std::string& service_name,
-                          const rmw_qos_profile_t qos_profile);
+                          const rmw_qos_profile_t& qos_profile);
 
     ServiceClientPtr service_client;
     rclcpp::CallbackGroup::SharedPtr callback_group;
@@ -213,7 +213,7 @@ private:
 template <class T>
 inline RosServiceNode<T>::ServiceClientInstance::ServiceClientInstance(
     std::shared_ptr<rclcpp::Node> node, const std::string& service_name,
-    const rmw_qos_profile_t qos_profile)
+    const rmw_qos_profile_t& qos_profile)
 {
   callback_group =
       node->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive, false);
