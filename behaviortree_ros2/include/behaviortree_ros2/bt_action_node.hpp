@@ -525,6 +525,25 @@ template <class T>
 inline void RosActionNode<T>::cancelGoal()
 {
   auto& executor = client_instance_->callback_executor;
+
+  // block until we get the goal handle (need it to cancel)
+  if(!goal_received_)
+  {
+    // process callbacks until future returns a valid goal handle or timeout
+    executor.spin_until_future_complete(future_goal_handle_, std::chrono::milliseconds(2000));
+
+    // update variables
+    goal_received_ = true;
+    goal_handle_ = future_goal_handle_.get();
+    future_goal_handle_ = {};
+
+    // if no goal handle the goal was rejected
+    if(!goal_handle_)
+    {
+      return;
+    }
+  }
+
   if(!goal_handle_)
   {
     if(future_goal_handle_.valid())
