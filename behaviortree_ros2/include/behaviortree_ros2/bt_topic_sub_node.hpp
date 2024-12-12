@@ -80,6 +80,7 @@ protected:
   std::weak_ptr<rclcpp::Node> node_;
   std::shared_ptr<SubscriberInstance> sub_instance_;
   std::shared_ptr<TopicT> last_msg_;
+  int failure_count_ = 0;
   std::string topic_name_;
   rclcpp::QoS qos_;
   boost::signals2::connection signal_connection_;
@@ -319,6 +320,23 @@ inline NodeStatus RosTopicSubNode<T>::tick()
   };
   sub_instance_->callback_group_executor.spin_some();
   auto status = CheckStatus(onTick(last_msg_));
+
+  if (failure_count_ > 20)
+  {
+    failure_count_ = 0;
+    return NodeStatus::FAILURE;
+  }
+
+  if (last_msg_ == nullptr)
+  {
+    failure_count_++;
+    return NodeStatus::RUNNING;
+  }
+  else
+  {
+    failure_count_ = 0;
+  }
+
   if(!latchLastMessage())
   {
     last_msg_.reset();
